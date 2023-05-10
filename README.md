@@ -3,10 +3,10 @@
 ## Team Members
 | Name  | GitHub
 | ------------- | ------------- |
-| Nada Atia | nada-dev
-| Mariam Fawzy | mariam606
-| Mira Shanouda | mirashanouda
-| Rawan Hamad | rawansameh
+| Nada Atia | [nada-dev](https://github.com/nada-dev)
+| Mariam Fawzy | [mariam606](https://github.com/mariam606)
+| Mira Shanouda | [mirashanouda](https://github.com/mirashanouda)
+| Rawan Hamad | [rawansameh](https://github.com/rawansameh)
 
 ## Proposal
 Alarms are important in our lives as they can help to make waking easier, and may help to reinforce natural circadian rhythms that strengthen the patterns of sleep and wakefulness. 
