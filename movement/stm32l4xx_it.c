@@ -37,68 +37,12 @@
 
 /* USER CODE BEGIN 0 */
 extern UART_HandleTypeDef huart2;
+extern int f; 
 
 uint8_t forward_buffer[4] = {0xC2, 0x20, 0xCA, 0x20}; //right, left
 uint8_t right_buffer[4] = {0xC2, 0x40, 0xC9, 0x00};
 uint8_t left_buffer[4] = {0xC2, 0x00, 0xC9, 0x20};
 uint8_t backward_buffer[4] = {0xC1, 0x40 , 0xC9, 0x40};
-uint8_t msg; 
-
-void move_car(){
-	//Forward 2 m
-	HAL_UART_Transmit(&huart2, &forward_buffer[0],sizeof(forward_buffer[0]),100);
-	HAL_UART_Transmit(&huart2, &forward_buffer[1], sizeof(forward_buffer[1]),100);
-	HAL_UART_Transmit(&huart2, &forward_buffer[2], sizeof(forward_buffer[2]),100);
-	HAL_UART_Transmit(&huart2, &forward_buffer[3], sizeof(forward_buffer[3]),100);
-	HAL_Delay(4000);
-	//Right turn
-	HAL_UART_Transmit(&huart2, &right_buffer[0], sizeof(right_buffer[0]),100);
-	HAL_UART_Transmit(&huart2, &right_buffer[1], sizeof(right_buffer[1]),100);
-	HAL_UART_Transmit(&huart2, &right_buffer[2], sizeof(right_buffer[2]),100);
-	HAL_UART_Transmit(&huart2, &right_buffer[3], sizeof(right_buffer[3]),100);
-	HAL_Delay(1000);
-	//Forward 1m
-	HAL_UART_Transmit(&huart2, &forward_buffer[0], sizeof(forward_buffer[0]),100);
-	HAL_UART_Transmit(&huart2, &forward_buffer[1], sizeof(forward_buffer[1]),100);
-	HAL_UART_Transmit(&huart2, &forward_buffer[2], sizeof(forward_buffer[2]),100);
-	HAL_UART_Transmit(&huart2, &forward_buffer[3], sizeof(forward_buffer[3]),100);
-	HAL_Delay(2000);
-	//Left turn
-	HAL_UART_Transmit(&huart2, &left_buffer[0], sizeof(left_buffer[0]),100);
-	HAL_UART_Transmit(&huart2, &left_buffer[1], sizeof(left_buffer[1]),100);
-	HAL_UART_Transmit(&huart2, &left_buffer[2], sizeof(left_buffer[2]),100);
-	HAL_UART_Transmit(&huart2, &left_buffer[3], sizeof(left_buffer[3]),100);
-	HAL_Delay(2000);
-	//Forward 2 m
-	HAL_UART_Transmit(&huart2, &forward_buffer[0], sizeof(forward_buffer[0]),100);
-	HAL_UART_Transmit(&huart2, &forward_buffer[1], sizeof(forward_buffer[1]),100);
-	HAL_UART_Transmit(&huart2, &forward_buffer[2], sizeof(forward_buffer[2]),100);
-	HAL_UART_Transmit(&huart2, &forward_buffer[3], sizeof(forward_buffer[3]),100);
-	HAL_Delay(4000);
-
-}
-
-void forward(){
-    msg = 0xC2;
-    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
-    msg = 0x40;
-    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
-    msg = 0xCA;
-    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
-    msg = 0x40;
-    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
-}
-
-void right(){
-    msg = 0xC2;
-    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
-    msg = 0x40;
-    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
-    msg = 0xCA;
-    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
-    msg = 0x00;
-    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
-}
 
 /* USER CODE END 0 */
 
@@ -277,10 +221,8 @@ void RTC_Alarm_IRQHandler(void)
 {
   /* USER CODE BEGIN RTC_Alarm_IRQn 0 */
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5,GPIO_PIN_SET);
-	forward();
-	HAL_Delay(4000);
-	right();
-	HAL_Delay(4000);
+	f = 1;
+	
   /* USER CODE END RTC_Alarm_IRQn 0 */
   HAL_RTC_AlarmIRQHandler(&hrtc);
   /* USER CODE BEGIN RTC_Alarm_IRQn 1 */

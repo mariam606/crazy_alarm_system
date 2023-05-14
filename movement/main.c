@@ -66,6 +66,43 @@ static void MX_RTC_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+int f = 0;
+uint8_t msg; 
+
+
+void forward(){
+    msg = 0xC2;
+    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
+    msg = 0x40;
+    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
+    msg = 0xCA;
+    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
+    msg = 0x40;
+    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
+}
+
+void right(){
+    msg = 0xC2;
+    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
+    msg = 0x40;
+    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
+    msg = 0xCA;
+    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
+    msg = 0x00;
+    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
+}
+
+void backward(){
+    msg = 0xC1;
+    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
+    msg = 0x40;
+    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
+    msg = 0xC9;
+    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
+    msg = 0x40;
+    HAL_UART_Transmit( &huart2, &msg, 1, 1000);
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -109,7 +146,14 @@ int main(void)
 	
   while (1)
   {
-
+		if (f){
+			forward();
+			HAL_Delay(2000);
+			right();
+			HAL_Delay(7000);
+			backward();
+			HAL_Delay(2000);
+		}
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -260,7 +304,7 @@ static void MX_RTC_Init(void)
     */
   sAlarm.AlarmTime.Hours = 0x0;
   sAlarm.AlarmTime.Minutes = 0x0;
-  sAlarm.AlarmTime.Seconds = 0x20;
+  sAlarm.AlarmTime.Seconds = 0x10;
   sAlarm.AlarmTime.SubSeconds = 0x0;
   sAlarm.AlarmTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
   sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
