@@ -14,7 +14,8 @@ Alarms are important in our lives as they can help to make waking easier, and ma
 We noticed that the alarms we use today are very traditional and as our brains prefer to be in the comfort zone, sometimes it is hard to overcome the urge to sleep and we sleep instead of waking up for our important meetings. We thought to implement a smart alarm system. The main component of this system is a car that is connected to some other sensors and I/O devices. One of the components connected to the car is a buzzer that is triggered when the current time matches a previously determined time using an RTC. At the same time, the car starts to move. In addition, the car is connected to a LCD that shows a riddle. To stop the buzzer and the car movement, the user should solve the riddle and input it to the system. This will make the person be more active as starting our day with some simple movements is the best thing to help us get up easily.
 
 ## Initial Design
-![Initial_Design](https://user-images.githubusercontent.com/67865802/235510986-ef036b8c-790e-4bfb-bf2e-44a2c3577abc.jpg)
+![Initial_Design](https://github.com/mariam606/crazy_alarm_system/assets/63364836/9e838839-3f74-40ac-ac45-2d529c2e267f)
+
 
 ## Identified components:
 | Hardware Components 
