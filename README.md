@@ -39,7 +39,10 @@ We noticed that the alarms we use today are very traditional and as our brains p
 # How components are used
 ## Buzzer
 A small 3V buzzer was used to sound the alarm after a specified time interval has passed. The integrated Real Time Clock (RTC) in the STM32L432KC microcontroller was used to achieve this. The positive side of the buzzer was connected to a specified GPIO PIN in the microcontroller (PA5 in our case) and its negative was connected to the microcontroller's ground.
-https://github.com/mariam606/crazy_alarm_system/assets/67865802/b7e9ae58-7d6a-48d3-a30d-ef6021f57502
+
+
+https://github.com/mariam606/crazy_alarm_system/assets/67865802/ed08a846-97fe-4931-8bb7-291dee86afbd
+
 
 
 ## KeyPad
@@ -47,7 +50,10 @@ To be able to detect whenever a key is pressed in the keypad, 4 GPIOs output are
 
 ## LCD
 The LCD Module Display I2C 1602 QAPASS is connected to a Serial I2C module which allows for a serial connection with the STM32L432KC microcontroller. Only the 4 pins of the I2C module are connected to the microcontroller.
-https://github.com/mariam606/crazy_alarm_system/assets/67865802/2e551660-082b-44cb-be59-73e13d9cd9dc
+
+
+https://github.com/mariam606/crazy_alarm_system/assets/67865802/ade83742-e399-4783-8f39-dd9d9016b0cf
+
 
 
 # Second Milestone
@@ -57,9 +63,16 @@ Link to repo: https://github.com/mariam606/crazy_alarm_system
 ## Movement
 To make sure that the movement is suitable for any space, the robot moves forward 1 meter, then rotates, then stops for a few seconds to allow the user to enter the riddle solution. 
 
+
+https://github.com/mariam606/crazy_alarm_system/assets/67865802/3fb81c8d-4d69-4017-b77d-9e654d3df42a
+
+
 ## Riddle
 The riddle displayed is a mathematical equation with random numbers generated every time. The user must write the answer then click 'A' on the keypad to indicate that he/she finished writing the answer. The LCD then displays whether answer is correct or wrong. If the answer is correct the buzzer stops ringing and car stops moving
-https://github.com/mariam606/crazy_alarm_system/assets/67865802/8782a59e-1bff-4ca1-9181-59358bfc28bc
+
+
+https://github.com/mariam606/crazy_alarm_system/assets/67865802/93db8023-b4ba-4caf-84e7-59b441a3757d
+
 
 
 ## Integration 
