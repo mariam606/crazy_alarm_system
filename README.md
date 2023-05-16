@@ -39,20 +39,16 @@ We noticed that the alarms we use today are very traditional and as our brains p
 # How components are used
 ## Buzzer
 A small 3V buzzer was used to sound the alarm after a specified time interval has passed. The integrated Real Time Clock (RTC) in the STM32L432KC microcontroller was used to achieve this. The positive side of the buzzer was connected to a specified GPIO PIN in the microcontroller (PA5 in our case) and its negative was connected to the microcontroller's ground.
-
+https://github.com/mariam606/crazy_alarm_system/assets/67865802/b7e9ae58-7d6a-48d3-a30d-ef6021f57502
 
 
 ## KeyPad
 To be able to detect whenever a key is pressed in the keypad, 4 GPIOs output are needed to drive the columns and 4 GPIO inputs to check which row was chosen by the user. First all columns are pulled to be high and then drive one column at a time to be low. A row is low when pressed. In each column when it is low, check if row is also low which means a key has been pressed.
 
-
-## Numerical Riddle
-There is a randomly numerical riddle generated for the user to solve when the alarm is set on. The user should input the answer coreclty to stop the alarm. Currently, when the answer is wrong, if the user is allwed in wait for seconds and input and input another answer. When, the answer is correct, a correct message is displayed.
-https://github.com/mariam606/crazy_alarm_system/assets/67865802/b656855d-b4c2-42ad-9a82-c030274286cb
-
-
 ## LCD
 The LCD Module Display I2C 1602 QAPASS is connected to a Serial I2C module which allows for a serial connection with the STM32L432KC microcontroller. Only the 4 pins of the I2C module are connected to the microcontroller.
+https://github.com/mariam606/crazy_alarm_system/assets/67865802/2e551660-082b-44cb-be59-73e13d9cd9dc
+
 
 # Second Milestone
 The first milestone integrates all of these previous components with the Dagu Wild Thumper 4WD Chassis to implement the alarm system           
@@ -63,9 +59,10 @@ To make sure that the movement is suitable for any space, the robot moves forwar
 
 ## Riddle
 The riddle displayed is a mathematical equation with random numbers generated every time. The user must write the answer then click 'A' on the keypad to indicate that he/she finished writing the answer. The LCD then displays whether answer is correct or wrong. If the answer is correct the buzzer stops ringing and car stops moving
+https://github.com/mariam606/crazy_alarm_system/assets/67865802/8782a59e-1bff-4ca1-9181-59358bfc28bc
+
 
 ## Integration 
 This is the demo of the integrated embedded system. 
-
 https://github.com/shalan/CSCE4301-WiKi/assets/67857016/2ce321ea-a9a7-4a68-8621-49c1ecf9c352
 
