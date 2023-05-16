@@ -40,13 +40,21 @@ We noticed that the alarms we use today are very traditional and as our brains p
 ## Buzzer
 A small 3V buzzer was used to sound the alarm after a specified time interval has passed. The integrated Real Time Clock (RTC) in the STM32L432KC microcontroller was used to achieve this. The positive side of the buzzer was connected to a specified GPIO PIN in the microcontroller (PA5 in our case) and its negative was connected to the microcontroller's ground.
 
+
+
 ## KeyPad
 To be able to detect whenever a key is pressed in the keypad, 4 GPIOs output are needed to drive the columns and 4 GPIO inputs to check which row was chosen by the user. First all columns are pulled to be high and then drive one column at a time to be low. A row is low when pressed. In each column when it is low, check if row is also low which means a key has been pressed.
+
+
+## Numerical Riddle
+There is a randomly numerical riddle generated for the user to solve when the alarm is set on. The user should input the answer coreclty to stop the alarm. Currently, when the answer is wrong, if the user is allwed in wait for seconds and input and input another answer. When, the answer is correct, a correct message is displayed.
+https://github.com/mariam606/crazy_alarm_system/assets/67865802/b656855d-b4c2-42ad-9a82-c030274286cb
+
 
 ## LCD
 The LCD Module Display I2C 1602 QAPASS is connected to a Serial I2C module which allows for a serial connection with the STM32L432KC microcontroller. Only the 4 pins of the I2C module are connected to the microcontroller.
 
-# First Milestone
+# Second Milestone
 The first milestone integrates all of these previous components with the Dagu Wild Thumper 4WD Chassis to implement the alarm system           
 Link to repo: https://github.com/mariam606/crazy_alarm_system
 
