@@ -84,7 +84,7 @@ static void MX_I2C3_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-int alarm_on_flag = 0;
+int alarm_on_flag = 0, riddle_flag = 1;
 int a, b,c,d,e,f, cnt = 0;
 uint8_t msg; 
 uint8_t key;
@@ -292,47 +292,11 @@ int main(void)
 
 	//alarm initalization:
 	//Transmit via I2C to set clock to 10:15:00 am
-	 uint8_t secbuffer[2], minbuffer[2], hourbuffer[2], buffer07[2], buffer08[2], buffer09[2], buffer0A[2],  controlbuffer[2], statusbuffer[2];
-	 // seconds
-	 secbuffer[0] = 0x00; //register address
-	 secbuffer[1] = 0x00; //data to put in register --> 35 sec
+	 uint8_t secbuffer[2], minbuffer[2], hourbuffer[2], 
+	 alarm_sec[2], alarm_min[2], alarm_h[2], buffer0A[2],  controlbuffer[2], statusbuffer[2];
+
 	
-		HAL_I2C_Master_Transmit(&hi2c3, 0xD0, secbuffer, 2, 10);
-	 // minutes
-	 minbuffer[0] = 0x01; //register address
-	 minbuffer[1] = 0x15; //data to put in register --> 15 min
-	 HAL_I2C_Master_Transmit(&hi2c3, 0xD0, minbuffer, 2, 10);
-	 // hours
-	 hourbuffer[0] = 0x02; //register address
-	 hourbuffer[1] = 0x50; //data to put in register 01001100 --> 10 am
-	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, hourbuffer, 2, 10);
-	
-	//alarm:
-	buffer07[0] = 0x07;
-	buffer07[1] = 0x10;	//0000 0000
-	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, buffer07, 2, 10);
-	
-	buffer08[0] = 0x08;
-	buffer08[1] = 0x15;	//0000 1111
-	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, buffer08, 2, 10);
-	
-	buffer09[0] = 0x09;
-	buffer09[1] = 0x50;	//0101 //0 AM/PM 
-	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, buffer09, 2, 10);
-	
-	buffer0A[0] = 0x0A;
-	buffer0A[1] = 0x80;	//1000 0000
-	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, buffer0A, 2, 10);
-	
-	//control:
-	controlbuffer[0] = 0x0E; 
-	controlbuffer[1] = 0x1D;  //00011101
-	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, controlbuffer, 2, 10);
-	
-	statusbuffer[0] = 0x0F;
-	statusbuffer[1] = 0x88;
-	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, statusbuffer, 2, 10);
-	 
+		
 	 //Receive via I2C and forward to UART
 	uint8_t h1,h2,m1,m2,s1,s2;
 	char uartBuf [100] = {0};
@@ -354,53 +318,92 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	sprintf(alarm_input, "Set Alarm hh:mm");
 	HD44780_Clear();
 	HD44780_SetCursor(0,0);
-	HD44780_PrintStr("Set Alarm hh:mm");
+	HD44780_PrintStr(alarm_input);
 	HD44780_SetCursor(0,1);
 	HD44780_PrintStr("Then Press B");
 	
+	controlbuffer[0] = 0x0E; 
+	controlbuffer[1] = 0x1C;  //00011101
+	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, controlbuffer, 2, 10);
+	
+	
+	j = 10;
   while (1)
   {
-		
-		if (!alarm_set_flag){ 
+		if (!alarm_set_flag && !alarm_on_flag){ 
 		key = read_key();
 		if (key != '_') {
 			alarm_input[j] = key;
-			j++;
+			if (j == 11) j+= 2;
+			else j++;
 		  HD44780_Clear();
 			HD44780_SetCursor(0,0);
 			HD44780_PrintStr(alarm_input);
-			//HD44780_PrintStr(j);
+			HD44780_SetCursor(0,1);
+			HD44780_PrintStr("Then Press B");
 				
 			if(key == 'B')
 			{
 				alarm_set_flag = 1;
-				alarm_on_flag = 1;
 				HD44780_Clear();
 		    HD44780_SetCursor(0,0);
 				HD44780_PrintStr("Alarm Set!");
-				
-				hh[0]=alarm_input[0];hh[1]=alarm_input[1];
-				mm[0]=alarm_input[2];mm[1]=alarm_input[3]; 
-				ss[0]=alarm_input[4];ss[1]=alarm_input[5];
+						
+				mm[0]=alarm_input[10];
+				mm[1]=alarm_input[11]; 
+				ss[0]=alarm_input[13];
+				ss[1]=alarm_input[14];
 				//set the alarm here
-
+				 // seconds
+				 secbuffer[0] = 0x00; //register address
+				 secbuffer[1] = 0x00; //data to put in register --> 35 sec
 				
-//				sAlarm.AlarmTime.Hours = (hh[0] - '0') * 10 + hh[1] - '0';
-//				sAlarm.AlarmTime.Minutes = (mm[0] - '0') * 10 + mm[1] - '0';
-//				sAlarm.AlarmTime.Seconds = (ss[0] - '0') * 10 + ss[1] - '0';
-//				sAlarm.AlarmTime.Seconds = 0x02;
-//				sAlarm.Alarm = RTC_ALARM_A;
-//				if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BCD) != HAL_OK)
-//				{
-//					_Error_Handler(__FILE__, __LINE__);
-//				}
+					HAL_I2C_Master_Transmit(&hi2c3, 0xD0, secbuffer, 2, 10);
+				 // minutes
+				 
+				 minbuffer[0] = 0x01; //register address
+				 minbuffer[1] = 0x10; //data to put in register --> 10 AM
+				 HAL_I2C_Master_Transmit(&hi2c3, 0xD0, minbuffer, 2, 10);
+				 
+				 // hours
+				 hourbuffer[0] = 0x02; //register address
+				 hourbuffer[1] = 0x50; //data to put in register 01001100 --> 10 am
+				 HAL_I2C_Master_Transmit(&hi2c3, 0xD0, hourbuffer, 2, 10);
+
+				//alarm:
+				alarm_sec[0] = 0x07;
+				alarm_sec[1] = (ss[0] - '0') * 16 + ss[1] - '0';
+				HAL_I2C_Master_Transmit(&hi2c3, 0xD0, alarm_sec, 2, 10);
+				
+				alarm_min[0] = 0x08;
+				alarm_min[1] = (mm[0] - '0') * 16 + mm[1] - '0';
+
+
+				HAL_I2C_Master_Transmit(&hi2c3, 0xD0, alarm_min, 2, 10);
+				alarm_h[0] = 0x09;
+				alarm_h[1] = 0x50;	//0101 //0 AM/PM 
+				HAL_I2C_Master_Transmit(&hi2c3, 0xD0, alarm_h, 2, 10);
+				
+				buffer0A[0] = 0x0A;
+				buffer0A[1] = 0x80;	//1000 0000
+				HAL_I2C_Master_Transmit(&hi2c3, 0xD0, buffer0A, 2, 10);
+				
+				//control:
+				controlbuffer[0] = 0x0E; 
+				controlbuffer[1] = 0x1D;  //00011101
+				HAL_I2C_Master_Transmit(&hi2c3, 0xD0, controlbuffer, 2, 10);
+				statusbuffer[0] = 0x0F;
+				statusbuffer[1] = 0x88;
+				HAL_I2C_Master_Transmit(&hi2c3, 0xD0, statusbuffer, 2, 10);
+		
 			}
 		}
 	}
 		
-	if(alarm_on_flag == 1){
+	if(alarm_set_flag == 1){
 		//HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8,GPIO_PIN_SET);
 		//send seconds register address 00h to read from
 		 HAL_I2C_Master_Transmit(&hi2c3, 0xD0, secbuffer, 1, 10);
@@ -416,40 +419,56 @@ int main(void)
 		 HAL_I2C_Master_Receive(&hi2c3, 0xD1, hourbuffer+1, 1, 10);
 		 h1 = (hourbuffer[1] >> 4) & 1;
 		 h2 = hourbuffer[1] & 0x0F;
+		
 		sprintf(uartBuf, "%d%d:%d%d:%d%d\r\n",h1,h2,m1,m2,s1,s2);
 		HAL_UART_Transmit(&huart2, (uint8_t *)uartBuf, sizeof(uartBuf), 10);
 		HAL_Delay(1000);
+		}
+		if (s1 == (ss[0] - '0') && s2 == (ss[1] - '0') && riddle_flag){// && m1 == (uint8_t)mm[0] && m2 == (uint8_t)mm[1]){
+			//display riddle
+			HD44780_Clear();
+			HD44780_SetCursor(0,0);
+			HD44780_PrintStr(riddle);
+			HAL_UART_Transmit(&huart2, (uint8_t*)"I got here\r\n", 100, 1000);
+			riddle_flag = 0;
+			alarm_set_flag = 0; //to stop incrementing
+			alarm_on_flag = 1;
+		}
 		
-		//getting the riddle answer and displaying it
-		HD44780_Clear();
-		HD44780_SetCursor(0,0);
-		HD44780_PrintStr(riddle);
-		key = read_key();
-		riddle_ans[i] = key;
-		if (key != '_') {
-			i++;
-			HD44780_SetCursor(0,1);
-			HD44780_PrintStr(riddle_ans);
-				
-			if(key == 'A')
-			{
-//				HAL_UART_Transmit(&huart2, (uint8_t*)answer, sizeof(answer), 100);
-				if(strcmp(riddle_ans,answer)==0)
+		if (alarm_on_flag){
+			//getting the riddle answer and displaying it
+			key = read_key();
+			riddle_ans[i] = key;
+			if (key != '_') {
+				i++;
+				HD44780_SetCursor(0,1);
+				HD44780_PrintStr(riddle_ans);
+					
+				if(key == 'A')
 				{
-					HD44780_SetCursor(0,1);
-					HD44780_PrintStr("Correct");
-					alarm_on_flag = 0;
+	//			HAL_UART_Transmit(&huart2, (uint8_t*)answer, sizeof(answer), 100);
+					if(strcmp(riddle_ans,answer)==0)
+					{
+						HD44780_SetCursor(0,1);
+						HD44780_PrintStr("Correct");
+						alarm_on_flag = 0;
+						alarm_set_flag = 0;
+						controlbuffer[1] = 0x1C;  //00011101
+						HAL_I2C_Master_Transmit(&hi2c3, 0xD0, controlbuffer, 2, 10);
+						j = 10; //problem here
+						sprintf(alarm_input, "Set Alarm hh:mm");			
+					}
+					else
+					{
+						HD44780_SetCursor(0,1);
+						HD44780_PrintStr("Wrong");
+						HAL_Delay(2000);
+						HD44780_Clear();
+						memset(riddle_ans, 0, sizeof(riddle_ans));
+						i = 0;
+						riddle_flag = 1;
+					}
 				}
-				else
-				{
-					HD44780_SetCursor(0,1);
-					HD44780_PrintStr("Wrong");
-					HAL_Delay(2000);
-					HD44780_Clear();
-					memset(riddle_ans, 0, sizeof(riddle_ans));
-					i = 0;
-				}
-			}
 			//car movement
 //			cnt++;
 //			cnt %= 600;
@@ -460,12 +479,9 @@ int main(void)
 //			else if(cnt < 300)
 //				backward();
 //			else stop();
+			}
 		}
-	}
-	else if (!alarm_on_flag){
-			stop();
-			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8,GPIO_PIN_RESET);
-	}
+
 	
   /* USER CODE END WHILE */
 
