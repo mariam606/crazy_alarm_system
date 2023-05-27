@@ -52,12 +52,13 @@
 #define C1_pin GPIO_PIN_4
 #define C2_pin GPIO_PIN_5
 #define C3_pin GPIO_PIN_6
-#define C4_pin GPIO_PIN_7
+#define C4_pin GPIO_PIN_5 //It's GPIOB not A
 #include "liquidcrystal_i2c.h.txt"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
+I2C_HandleTypeDef hi2c3;
 
 RTC_HandleTypeDef hrtc;
 
@@ -74,6 +75,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_RTC_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_I2C3_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -94,7 +96,7 @@ char read_key(){
 	HAL_GPIO_WritePin (GPIOA, C1_pin, GPIO_PIN_RESET); //Pull the C1 low
 	HAL_GPIO_WritePin (GPIOA, C2_pin, GPIO_PIN_SET);  // Pull the C2 High
 	HAL_GPIO_WritePin (GPIOA, C3_pin, GPIO_PIN_SET);  // Pull the C3 High
-	HAL_GPIO_WritePin (GPIOA, C4_pin, GPIO_PIN_SET);  // Pull the C4 High
+	HAL_GPIO_WritePin (GPIOB, C4_pin, GPIO_PIN_SET);  // Pull the C4 High
 	
 	if (!(HAL_GPIO_ReadPin (GPIOA, R1_pin)))   // if the Col 1 is low
 	{
@@ -121,7 +123,7 @@ char read_key(){
 	HAL_GPIO_WritePin (GPIOA, C1_pin, GPIO_PIN_SET); //Pull the C1 low
 	HAL_GPIO_WritePin (GPIOA, C2_pin, GPIO_PIN_RESET);  // Pull the C2 High
 	HAL_GPIO_WritePin (GPIOA, C3_pin, GPIO_PIN_SET);  // Pull the C3 High
-	HAL_GPIO_WritePin (GPIOA, C4_pin, GPIO_PIN_SET);  // Pull the C4 High
+	HAL_GPIO_WritePin (GPIOB, C4_pin, GPIO_PIN_SET);  // Pull the C4 High
 	
 	if (!(HAL_GPIO_ReadPin (GPIOA, R1_pin)))   // if the Col 1 is low
 	{
@@ -151,7 +153,7 @@ char read_key(){
 	HAL_GPIO_WritePin (GPIOA, C1_pin, GPIO_PIN_SET); //Pull the C1 low
 	HAL_GPIO_WritePin (GPIOA, C2_pin, GPIO_PIN_SET);  // Pull the C2 High
 	HAL_GPIO_WritePin (GPIOA, C3_pin, GPIO_PIN_RESET);  // Pull the C3 High
-	HAL_GPIO_WritePin (GPIOA, C4_pin, GPIO_PIN_SET);  // Pull the C4 High
+	HAL_GPIO_WritePin (GPIOB, C4_pin, GPIO_PIN_SET);  // Pull the C4 High
 	
 	if (!(HAL_GPIO_ReadPin (GPIOA, R1_pin)))   // if the Col 1 is low
 	{
@@ -180,7 +182,7 @@ char read_key(){
 	HAL_GPIO_WritePin (GPIOA, C1_pin, GPIO_PIN_SET); //Pull the C1 low
 	HAL_GPIO_WritePin (GPIOA, C2_pin, GPIO_PIN_SET);  // Pull the C2 High
 	HAL_GPIO_WritePin (GPIOA, C3_pin, GPIO_PIN_SET);  // Pull the C3 High
-	HAL_GPIO_WritePin (GPIOA, C4_pin, GPIO_PIN_RESET);  // Pull the C4 High
+	HAL_GPIO_WritePin (GPIOB, C4_pin, GPIO_PIN_RESET);  // Pull the C4 High
 	
 	if (!(HAL_GPIO_ReadPin (GPIOA, R1_pin)))   // if the Col 1 is low
 	{
@@ -284,10 +286,56 @@ int main(void)
   MX_USART2_UART_Init();
   MX_RTC_Init();
   MX_I2C1_Init();
+  MX_I2C3_Init();
   /* USER CODE BEGIN 2 */
-	HAL_NVIC_EnableIRQ(RTC_Alarm_IRQn);
+	HAL_NVIC_EnableIRQ(RTC_Alarm_IRQn);  //not necessary now 
 
-	//srand(rand()%10);
+	//alarm initalization:
+	//Transmit via I2C to set clock to 10:15:00 am
+	 uint8_t secbuffer[2], minbuffer[2], hourbuffer[2], buffer07[2], buffer08[2], buffer09[2], buffer0A[2],  controlbuffer[2], statusbuffer[2];
+	 // seconds
+	 secbuffer[0] = 0x00; //register address
+	 secbuffer[1] = 0x00; //data to put in register --> 35 sec
+	
+		HAL_I2C_Master_Transmit(&hi2c3, 0xD0, secbuffer, 2, 10);
+	 // minutes
+	 minbuffer[0] = 0x01; //register address
+	 minbuffer[1] = 0x15; //data to put in register --> 15 min
+	 HAL_I2C_Master_Transmit(&hi2c3, 0xD0, minbuffer, 2, 10);
+	 // hours
+	 hourbuffer[0] = 0x02; //register address
+	 hourbuffer[1] = 0x50; //data to put in register 01001100 --> 10 am
+	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, hourbuffer, 2, 10);
+	
+	//alarm:
+	buffer07[0] = 0x07;
+	buffer07[1] = 0x10;	//0000 0000
+	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, buffer07, 2, 10);
+	
+	buffer08[0] = 0x08;
+	buffer08[1] = 0x15;	//0000 1111
+	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, buffer08, 2, 10);
+	
+	buffer09[0] = 0x09;
+	buffer09[1] = 0x50;	//0101 //0 AM/PM 
+	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, buffer09, 2, 10);
+	
+	buffer0A[0] = 0x0A;
+	buffer0A[1] = 0x80;	//1000 0000
+	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, buffer0A, 2, 10);
+	
+	//control:
+	controlbuffer[0] = 0x0E; 
+	controlbuffer[1] = 0x1D;  //00011101
+	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, controlbuffer, 2, 10);
+	
+	statusbuffer[0] = 0x0F;
+	statusbuffer[1] = 0x88;
+	HAL_I2C_Master_Transmit(&hi2c3, 0xD0, statusbuffer, 2, 10);
+	 
+	 //Receive via I2C and forward to UART
+	uint8_t h1,h2,m1,m2,s1,s2;
+	char uartBuf [100] = {0};
 	a = rand() % 10, b = rand() % 10, c = rand() % 100, d = rand() % 10, e = rand() % 10, f = rand() % 10;
 	int ans = a * b + c * d + e * f;
 	
@@ -328,6 +376,7 @@ int main(void)
 			if(key == 'B')
 			{
 				alarm_set_flag = 1;
+				alarm_on_flag = 1;
 				HD44780_Clear();
 		    HD44780_SetCursor(0,0);
 				HD44780_PrintStr("Alarm Set!");
@@ -336,6 +385,8 @@ int main(void)
 				mm[0]=alarm_input[2];mm[1]=alarm_input[3]; 
 				ss[0]=alarm_input[4];ss[1]=alarm_input[5];
 				//set the alarm here
+
+				
 //				sAlarm.AlarmTime.Hours = (hh[0] - '0') * 10 + hh[1] - '0';
 //				sAlarm.AlarmTime.Minutes = (mm[0] - '0') * 10 + mm[1] - '0';
 //				sAlarm.AlarmTime.Seconds = (ss[0] - '0') * 10 + ss[1] - '0';
@@ -350,7 +401,25 @@ int main(void)
 	}
 		
 	if(alarm_on_flag == 1){
-		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8,GPIO_PIN_SET);
+		//HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8,GPIO_PIN_SET);
+		//send seconds register address 00h to read from
+		 HAL_I2C_Master_Transmit(&hi2c3, 0xD0, secbuffer, 1, 10);
+		 HAL_I2C_Master_Receive(&hi2c3, 0xD1, secbuffer+1, 1, 10);
+		 //prepare UART output
+		 s1 = secbuffer[1] >> 4;
+		 s2 = secbuffer[1] & 0x0F;
+		 HAL_I2C_Master_Transmit(&hi2c3, 0xD0, minbuffer, 1, 10);
+		 HAL_I2C_Master_Receive(&hi2c3, 0xD1, minbuffer+1, 1, 10);
+		 m1 = minbuffer[1] >> 4;
+		 m2 = minbuffer[1] & 0x0F;
+		 HAL_I2C_Master_Transmit(&hi2c3, 0xD0, hourbuffer, 1, 10);
+		 HAL_I2C_Master_Receive(&hi2c3, 0xD1, hourbuffer+1, 1, 10);
+		 h1 = (hourbuffer[1] >> 4) & 1;
+		 h2 = hourbuffer[1] & 0x0F;
+		sprintf(uartBuf, "%d%d:%d%d:%d%d\r\n",h1,h2,m1,m2,s1,s2);
+		HAL_UART_Transmit(&huart2, (uint8_t *)uartBuf, sizeof(uartBuf), 10);
+		HAL_Delay(1000);
+		
 		//getting the riddle answer and displaying it
 		HD44780_Clear();
 		HD44780_SetCursor(0,0);
@@ -382,15 +451,15 @@ int main(void)
 				}
 			}
 			//car movement
-			cnt++;
-			cnt %= 600;
-			if(cnt < 100)
-				forward();
-			else if(cnt < 200)
-				right();
-			else if(cnt < 300)
-				backward();
-			else stop();
+//			cnt++;
+//			cnt %= 600;
+//			if(cnt < 100)
+//				forward();
+//			else if(cnt < 200)
+//				right();
+//			else if(cnt < 300)
+//				backward();
+//			else stop();
 		}
 	}
 	else if (!alarm_on_flag){
@@ -461,9 +530,10 @@ void SystemClock_Config(void)
   }
 
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_RTC|RCC_PERIPHCLK_USART2
-                              |RCC_PERIPHCLK_I2C1;
+                              |RCC_PERIPHCLK_I2C1|RCC_PERIPHCLK_I2C3;
   PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
   PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
+  PeriphClkInit.I2c3ClockSelection = RCC_I2C3CLKSOURCE_PCLK1;
   PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
@@ -521,6 +591,40 @@ static void MX_I2C1_Init(void)
     /**Configure Digital filter 
     */
   if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+}
+
+/* I2C3 init function */
+static void MX_I2C3_Init(void)
+{
+
+  hi2c3.Instance = I2C3;
+  hi2c3.Init.Timing = 0x10909CEC;
+  hi2c3.Init.OwnAddress1 = 0;
+  hi2c3.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c3.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c3.Init.OwnAddress2 = 0;
+  hi2c3.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c3.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c3.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c3) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+    /**Configure Analogue filter 
+    */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c3, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+    /**Configure Digital filter 
+    */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c3, 0) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
@@ -637,10 +741,13 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7 
-                          |GPIO_PIN_8, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_8, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PA0 PA1 PA11 PA12 */
   GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_11|GPIO_PIN_12;
@@ -648,14 +755,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PA4 PA5 PA6 PA7 
-                           PA8 */
-  GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7 
-                          |GPIO_PIN_8;
+  /*Configure GPIO pins : PA4 PA5 PA6 PA8 */
+  GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_8;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PB5 */
+  GPIO_InitStruct.Pin = GPIO_PIN_5;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
 
