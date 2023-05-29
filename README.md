@@ -8,6 +8,7 @@
 | Mira Shanouda | [mirashanouda](https://github.com/mirashanouda)
 | Rawan Hamad | [rawansameh](https://github.com/mirashanouda)
 
+# First Milestone
 ## Proposal
 Alarms are important in our lives as they can help to make waking easier, and may help to reinforce natural circadian rhythms that strengthen the patterns of sleep and wakefulness. 
 
@@ -36,7 +37,7 @@ We noticed that the alarms we use today are very traditional and as our brains p
 | STM32CubeMX
 
 
-# How components are used
+## How components are used
 ## Buzzer
 A small 3V buzzer was used to sound the alarm after a specified time interval has passed. The integrated Real Time Clock (RTC) in the STM32L432KC microcontroller was used to achieve this. The positive side of the buzzer was connected to a specified GPIO PIN in the microcontroller (PA5 in our case) and its negative was connected to the microcontroller's ground.
 
@@ -58,7 +59,6 @@ https://github.com/mariam606/crazy_alarm_system/assets/67865802/ade83742-e399-47
 
 # Second Milestone
 The first milestone integrates all of these previous components with the Dagu Wild Thumper 4WD Chassis to implement the alarm system           
-Link to repo: https://github.com/mariam606/crazy_alarm_system
 
 ## Movement
 To make sure that the movement is suitable for any space, the robot moves forward 1 meter, then rotates, then stops for a few seconds to allow the user to enter the riddle solution. 
@@ -75,7 +75,26 @@ https://github.com/mariam606/crazy_alarm_system/assets/67865802/93db8023-b4ba-4c
 
 
 
-## Integration 
+# Integration 
 This is the demo of the integrated embedded system. 
+
+
 https://github.com/shalan/CSCE4301-WiKi/assets/67857016/2ce321ea-a9a7-4a68-8621-49c1ecf9c352
 
+# Third Milestone
+In this MS, we have done the following:
+## Adjusting the workflow of the LCD
+As shown in the demo video below, the LCD starts by asking the user to enter the alarm. After that, it waits till the alarm time starts, and displays the riddle.
+
+## Enabling the user to enter the alarm from the keypad
+Unlike the previous milestone, the user currently can enter the alarm time from the keypad.
+
+## Using freeRTOS instead of Round Robin
+The code is divided into 5 tasks, and each of them performs a specific task. Some parts of the project need delay such as the car movement. This makes the freeRTOS very useful because the delay, in this case, will not affect other tasks. The tasks are divided as following:
+- Getting the alarm input from the user
+- Adjusting the RTC to start the alarm
+- Getting the riddle answer and checking if it is correct 
+- Moving the car
+
+## Demo of MS4:
+https://github.com/shalan/CSCE4301-WiKi/assets/67857016/a77fdb07-c6cb-40bc-9208-12089989c376
