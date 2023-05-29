@@ -127,3 +127,5 @@ https://github.com/shalan/CSCE4301-WiKi/assets/67857016/a77fdb07-c6cb-40bc-9208-
 
 ## References: 
 LCD library : https://www.micropeta.com/video61
+Pmod KYPD Keypad: https://github.com/mariam606/crazy_alarm_system/blob/main/Datasheets/pmodkypd_rm.pdf
+
