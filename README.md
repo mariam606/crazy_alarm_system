@@ -119,4 +119,8 @@ The code is divided into 4 tasks, and each of them performs a specific task. Som
 ## Final Demo 
 https://github.com/shalan/CSCE4301-WiKi/assets/67857016/a77fdb07-c6cb-40bc-9208-12089989c376
 
-
+## Furutre Imporvment:
+- Change the hardware model to be in a small car instead of Dagu car. 
+- Adding obstacle detection technique to navigate the room effectively.
+- Use more effective batter that last for a longer time. 
+- Save the power consummption in case the system is not doing certain tasks. 
