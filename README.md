@@ -89,7 +89,7 @@ As shown in the demo video below, the LCD starts by asking the user to enter the
 Unlike the previous milestone, the user currently can enter the alarm time from the keypad.
 
 ## Using freeRTOS instead of Round Robin
-The code is divided into 5 tasks, and each of them performs a specific task. Some parts of the project need delay such as the car movement. This makes the freeRTOS very useful because the delay, in this case, will not affect other tasks. The tasks are divided as following:
+The code is divided into 4 tasks, and each of them performs a specific task. Some parts of the project need delay such as the car movement. This makes the freeRTOS very useful because the delay, in this case, will not affect other tasks. The tasks are divided as following:
 - Getting the alarm input from the user
 - Adjusting the RTC to start the alarm
 - Getting the riddle answer and checking if it is correct 
