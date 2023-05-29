@@ -16,7 +16,8 @@ Alarms are important in our lives as they can help to make waking easier, and ma
 We noticed that the alarms we use today are very traditional and as our brains prefer to be in our comfort zone, sometimes it is hard to overcome the urge to sleep and we sleep instead of waking up for our important meetings. We thought to implement a smart alarm system. The main component of this system is a car that is connected to some other sensors and I/O devices. One of the components connected to the car is a buzzer that is triggered when the current time matches a previously determined time using an RTC. At the same time, the car starts to move. In addition, the car is connected to an LCD that shows a riddle. To stop the buzzer and the car movement, the user should solve the riddle and input it into the system. This will make the person more active as starting our day with some simple movements is the best thing to help us get up easily.
 
 ## Updated Block Diagram
-![Updated_Diagram](https://github.com/shalan/CSCE4301-WiKi/assets/67865802/1b39d7f6-5018-4d0a-83a8-e395fe46980b)
+![Untitled - Frame 1](https://github.com/mariam606/crazy_alarm_system/assets/67865802/2e8ec51c-8a19-4a1f-a8eb-d80eded9a3b2)
+
 
 ## Identified components:
 | Hardware Components 
@@ -94,7 +95,7 @@ The code is divided into 5 tasks, and each of them performs a specific task. Som
 - Getting the riddle answer and checking if it is correct 
 - Moving the car
 
-## Demo of MS4:
+## Demo of MS3:
 https://github.com/shalan/CSCE4301-WiKi/assets/67857016/a77fdb07-c6cb-40bc-9208-12089989c376
 
 ## User Manual
@@ -103,7 +104,7 @@ In order to run the project, do the following:
 - Turn on the battery
 - Enter the alarm input
 - Press B to submit the alarm input
-- After the time mathces the input, the alarm will be on. This means that the car will move, buzzer will work, and the riddle will be displayed over the LCD
+- After the time matches the input, the alarm will be on. This means that the car will move, buzzer will work, and the riddle will be displayed over the LCD
 - Solve the riddle
 - Enter the answer of the riddle thorough the keypad followed by 'A' to submit your answer.
 
@@ -113,4 +114,4 @@ In order to run the project, do the following:
 - Movement: this is the part of the project responsible for moving the car in a certain path with certain delays
 - Integration: this is the integration of keypad, LCD and car movement together.
 - Buzzer: this is simply related to enabling the buzzer
-- FreeRTOS: this is where we have used freeRTOS insted of polling
+- FreeRTOS: this is where we have used freeRTOS instead of polling
