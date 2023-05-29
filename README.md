@@ -126,6 +126,6 @@ https://github.com/shalan/CSCE4301-WiKi/assets/67857016/a77fdb07-c6cb-40bc-9208-
 - Save the power consummption in case the system is not doing certain tasks. 
 
 ## References: 
-LCD library : https://www.micropeta.com/video61
-Pmod KYPD Keypad: https://github.com/mariam606/crazy_alarm_system/blob/main/Datasheets/pmodkypd_rm.pdf
-
+- LCD library : https://www.micropeta.com/video61
+- Pmod KYPD Keypad: https://github.com/mariam606/crazy_alarm_system/blob/main/Datasheets/pmodkypd_rm.pdf
+- STM32 Manual: https://github.com/mariam606/crazy_alarm_system/blob/main/Datasheets/UM1884_Description%20of%20STM32L4%20HAL%20and%20LL%20drivers%20(dm00173145).pdf
