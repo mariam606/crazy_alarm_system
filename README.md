@@ -1,4 +1,5 @@
 # Crazy Alarm System
+Link to repo: https://github.com/mariam606/crazy_alarm_system
 
 ## Team Members
 | Name  | GitHub
@@ -27,6 +28,7 @@ We noticed that the alarms we use today are very traditional and as our brains p
 | [Pmod KYPD: 16-button Keypad](https://www.amazon.co.uk/DIGILENT-410-195-410-195-16-Buttons-Keyboard/dp/B0792G3C45)
 | [The Pololu TReX Motor Controller](https://www.pololu.com/product/777)
 | [Dagu Wild Thumper 4WD Chassis](https://www.pololu.com/product/1567)
+| [DS3231 High Precision Real Time Clock (RTC)](https://store.fut-electronics.com/products/ds3231-high-precision-rtc-module-ds3231)
 | [Jumper Wires](https://ram-e-shop.com/product/ph60-mf-20cm/)
 | [Bread Board](https://ram-e-shop.com/product/bb01-bread-board/)
 | [Buzzer](https://ram-e-shop.com/product/buzzar3v/)
