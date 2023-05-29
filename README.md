@@ -44,8 +44,6 @@ A small 3V buzzer was used to sound the alarm after a specified time interval ha
 
 https://github.com/mariam606/crazy_alarm_system/assets/67865802/ed08a846-97fe-4931-8bb7-291dee86afbd
 
-
-
 ## KeyPad
 To be able to detect whenever a key is pressed in the keypad, 4 GPIOs output are needed to drive the columns and 4 GPIO inputs to check which row was chosen by the user. First all columns are pulled to be high and then drive one column at a time to be low. A row is low when pressed. In each column when it is low, check if row is also low which means a key has been pressed.
 
@@ -73,8 +71,6 @@ The riddle displayed is a mathematical equation with random numbers generated ev
 
 https://github.com/mariam606/crazy_alarm_system/assets/67865802/93db8023-b4ba-4caf-84e7-59b441a3757d
 
-
-
 # Integration 
 This is the demo of the integrated embedded system. 
 
@@ -100,7 +96,7 @@ The code is divided into 5 tasks, and each of them performs a specific task. Som
 https://github.com/shalan/CSCE4301-WiKi/assets/67857016/a77fdb07-c6cb-40bc-9208-12089989c376
 
 ## User Manual
-in order to run the project, do the following:
+In order to run the project, do the following:
 - Make sure that all the wires are connected and the battery is charged.
 - Turn on the battery
 - Enter the alarm input
@@ -108,3 +104,11 @@ in order to run the project, do the following:
 - After the time mathces the input, the alarm will be on. This means that the car will move, buzzer will work, and the riddle will be displayed over the LCD
 - Solve the riddle
 - Enter the answer of the riddle thorough the keypad followed by 'A' to submit your answer.
+
+## The repository structure:
+- LCD: this part is related to displaying the statement over the LCD
+- Keypad: this part is realted to entering an input from the user using keypad
+- Movement: this is the part of the project responsible for moving the car in a certain path with certain delays
+- Integration: this is the integration of keypad, LCD and car movement together.
+- Buzzer: this is simply related to enabling the buzzer
+- FreeRTOS: this is where we have used freeRTOS insted of polling
