@@ -98,3 +98,13 @@ The code is divided into 5 tasks, and each of them performs a specific task. Som
 
 ## Demo of MS4:
 https://github.com/shalan/CSCE4301-WiKi/assets/67857016/a77fdb07-c6cb-40bc-9208-12089989c376
+
+## User Manual
+in order to run the project, do the following:
+- Make sure that all the wires are connected and the battery is charged.
+- Turn on the battery
+- Enter the alarm input
+- Press B to submit the alarm input
+- After the time mathces the input, the alarm will be on. This means that the car will move, buzzer will work, and the riddle will be displayed over the LCD
+- Solve the riddle
+- Enter the answer of the riddle thorough the keypad followed by 'A' to submit your answer.
