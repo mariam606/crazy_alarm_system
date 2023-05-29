@@ -9,13 +9,39 @@ Link to repo: https://github.com/mariam606/crazy_alarm_system
 | Mira Shanouda | [mirashanouda](https://github.com/mirashanouda)
 | Rawan Hamad | [rawansameh](https://github.com/mirashanouda)
 
-# First Milestone
-## Proposal
+## Project Description
 Alarms are important in our lives as they can help to make waking easier, and may help to reinforce natural circadian rhythms that strengthen the patterns of sleep and wakefulness. 
 
 We noticed that the alarms we use today are very traditional and as our brains prefer to be in our comfort zone, sometimes it is hard to overcome the urge to sleep and we sleep instead of waking up for our important meetings. We thought to implement a smart alarm system. The main component of this system is a car that is connected to some other sensors and I/O devices. One of the components connected to the car is a buzzer that is triggered when the current time matches a previously determined time using an RTC. At the same time, the car starts to move. In addition, the car is connected to an LCD that shows a riddle. To stop the buzzer and the car movement, the user should solve the riddle and input it into the system. This will make the person more active as starting our day with some simple movements is the best thing to help us get up easily.
 
-## Updated Block Diagram
+# User Manual
+
+## To run the code locally:
+- Install keil and STM32CubeMx
+- Clone this repo. 
+- Open a new project in keil and add the files in the FreeRTOS directory in the src folder in the new project. 
+- Make the hardware connections as described in the block diagram. 
+
+## In order to run the project on Dagu car, do the following:
+- Upload the code on STM32L432KC.
+- Make sure that all the wires are connected and the battery is charged.
+- Turn on the car battery
+- Enter the alarm input
+- Press B to submit the alarm input
+- After the time matches the input, the alarm will be on. This means that the car will move, buzzer will work, and the riddle will be displayed over the LCD
+- Solve the riddle
+- Enter the answer of the riddle thorough the keypad followed by 'A' to submit your answer.
+- If the answer is correct, both the car and the alarm stop. If not, the riddle, car and alarm keeps running wating for the correct answer.
+
+## The repository structure:
+- LCD: this part is related to displaying the statement over the LCD
+- Keypad: this part is realted to entering an input from the user using keypad
+- Movement: this is the part of the project responsible for moving the car in a certain path with certain delays
+- Integration: this is the integration of keypad, LCD and car movement together.
+- Buzzer: this is simply related to enabling the buzzer
+- FreeRTOS: this is the final code where we have used freeRTOS instead of polling to integrate the whole system. 
+
+## Block Diagram
 ![Untitled - Frame 1](https://github.com/mariam606/crazy_alarm_system/assets/67865802/2e8ec51c-8a19-4a1f-a8eb-d80eded9a3b2)
 
 
@@ -36,8 +62,8 @@ We noticed that the alarms we use today are very traditional and as our brains p
 
 | Software Components 
 | -------------
-| Keil uVision 5
-| STM32CubeMX
+| [Keil uVision 5](https://www.keil.com/download/)
+| [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html)
 
 
 ## How components are used
@@ -55,11 +81,7 @@ The LCD Module Display I2C 1602 QAPASS is connected to a Serial I2C module which
 
 
 https://github.com/mariam606/crazy_alarm_system/assets/67865802/ade83742-e399-4783-8f39-dd9d9016b0cf
-
-
-
-# Second Milestone
-The first milestone integrates all of these previous components with the Dagu Wild Thumper 4WD Chassis to implement the alarm system           
+       
 
 ## Movement
 To make sure that the movement is suitable for any space, the robot moves forward 1 meter, then rotates, then stops for a few seconds to allow the user to enter the riddle solution. 
@@ -80,13 +102,12 @@ This is the demo of the integrated embedded system.
 
 https://github.com/shalan/CSCE4301-WiKi/assets/67857016/2ce321ea-a9a7-4a68-8621-49c1ecf9c352
 
-# Third Milestone
-In this MS, we have done the following:
+
 ## Adjusting the workflow of the LCD
 As shown in the demo video below, the LCD starts by asking the user to enter the alarm. After that, it waits till the alarm time starts, and displays the riddle.
 
 ## Enabling the user to enter the alarm from the keypad
-Unlike the previous milestone, the user currently can enter the alarm time from the keypad.
+The user currently can enter the alarm time from the keypad.
 
 ## Using freeRTOS instead of Round Robin
 The code is divided into 4 tasks, and each of them performs a specific task. Some parts of the project need delay such as the car movement. This makes the freeRTOS very useful because the delay, in this case, will not affect other tasks. The tasks are divided as following:
@@ -95,23 +116,7 @@ The code is divided into 4 tasks, and each of them performs a specific task. Som
 - Getting the riddle answer and checking if it is correct 
 - Moving the car
 
-## Demo of MS3:
+## Final Demo 
 https://github.com/shalan/CSCE4301-WiKi/assets/67857016/a77fdb07-c6cb-40bc-9208-12089989c376
 
-## User Manual
-In order to run the project, do the following:
-- Make sure that all the wires are connected and the battery is charged.
-- Turn on the battery
-- Enter the alarm input
-- Press B to submit the alarm input
-- After the time matches the input, the alarm will be on. This means that the car will move, buzzer will work, and the riddle will be displayed over the LCD
-- Solve the riddle
-- Enter the answer of the riddle thorough the keypad followed by 'A' to submit your answer.
 
-## The repository structure:
-- LCD: this part is related to displaying the statement over the LCD
-- Keypad: this part is realted to entering an input from the user using keypad
-- Movement: this is the part of the project responsible for moving the car in a certain path with certain delays
-- Integration: this is the integration of keypad, LCD and car movement together.
-- Buzzer: this is simply related to enabling the buzzer
-- FreeRTOS: this is where we have used freeRTOS instead of polling
