@@ -126,4 +126,4 @@ https://github.com/shalan/CSCE4301-WiKi/assets/67857016/a77fdb07-c6cb-40bc-9208-
 - Save the power consummption in case the system is not doing certain tasks. 
 
 ## References: 
-https://www.micropeta.com/video61
+LCD library : https://www.micropeta.com/video61
